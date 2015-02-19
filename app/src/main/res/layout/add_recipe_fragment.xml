@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+
+            <EditText
+                android:id="@+id/reps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_row="0"
+                android:ems="10"
+                android:hint="Recipe Title"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textCursorDrawable="@null" />
+
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_row="1"
+                android:ems="10"
+                android:hint="Ingredients"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/editText5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_row="2"
+                android:ems="10"
+                android:hint="Instructions"
+                android:inputType="textMultiLine" />
+
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/fab_margin"
+                fab:image="@drawable/fab_plus_icon"
+                fab:show_animation="@anim/fab_jump_from_right"
+                fab:hide_animation="@anim/fab_roll_to_right"
+                fab:button_color="@color/fab_material_amber_500"
+                fab:button_colorPressed="@color/fab_material_amber_900"
+                android:layout_row="4"
+                android:layout_column="0"
+                />
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

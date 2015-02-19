@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ColorPrimary">#5677fc</color>
+    <color name="ColorPrimaryDark">#303f9f</color>
+    <color name="tabsScrollColor">#2a36b1</color>
+
+    <color name="ColorExercisePrimary">#e51c23</color>
+    <color name="ColorExerciseDark">#b0120a</color>
+    <color name="exerciseTabScrollColor">#b0120a</color>
+
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+
+    <color name="fbutton_color_emerald">#2ecc71</color>
+    <color name="fbutton_color_nephritis">#2baf2b</color>
+    <color name="fbutton_color_peter_river">#3498db</color>
+
+    <color name="actionbar_color">#3CB371</color>
+
+    <color name="white_text">#FFFFFF</color>
+
+    <color name="fbutton_color_alizarin">#e74c3c</color>
+    <color name="fbutton_color_transparent">@android:color/transparent</color>
+
+    <color name="activate_text_color">#FF666666</color>
+    <color name="deactivate_text_color">#FFCCCCCC</color>
+    <color name="transparent">#00000000</color>
+</resources>

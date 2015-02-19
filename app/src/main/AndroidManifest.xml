@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="logofhealth.com.logofhealth">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".menu.MainMenu"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".menu.RecipeMenu"
+            android:label="Recipes"></activity>
+
+        <activity
+            android:name=".menu.ExerciseMenu"
+            android:label="Exercise"></activity>
+
+        <activity
+            android:name=".extra.DisplayRecipeDetail"
+            android:label=""></activity>
+
+        <activity
+            android:name=".extra.WeightFragment"
+            android:label=""></activity>
+    </application>
+
+</manifest>

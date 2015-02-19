@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <com.mobeta.android.dslv.DragSortListView xmlns:dslv="http://schemas.android.com/apk/lib/com.mobeta.android.dslv"
+        android:id="@+id/listView2"
+        android:layout_width="match_parent"
+        android:layout_height="435dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        dslv:collapsed_height="2dp"
+        dslv:drag_enabled="true"
+        dslv:drag_scroll_start="0.33"
+        dslv:drag_start_mode="onMove"
+        dslv:float_alpha="0.6"
+        dslv:max_drag_scroll_speed="0.5"
+        dslv:remove_enabled="true"
+        dslv:remove_mode="flingRemove"
+        dslv:slide_shuffle_speed="0.3"
+        dslv:sort_enabled="false"
+        dslv:track_drag_sort="false"
+        dslv:use_default_controller="true" />
+
+</LinearLayout>
