@@ -72,6 +72,37 @@
                 android:layout_marginTop="5dp"
                 android:textSize="20sp" />
 
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginRight="15dp"
+                android:layout_row="4"
+                fab:button_color="@color/fab_material_amber_500"
+                fab:button_colorPressed="@color/fab_material_amber_900"
+                fab:hide_animation="@anim/fab_roll_to_right"
+                fab:image="@drawable/ic_action_edit"
+                fab:show_animation="@anim/fab_jump_from_right" />
+
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="right"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="-20dp"
+                android:visibility="invisible"
+                android:layout_row="4"
+                fab:button_color="@color/fab_material_amber_500"
+                fab:button_colorPressed="@color/fab_material_amber_900"
+                fab:hide_animation="@anim/fab_roll_to_right"
+                fab:image="@drawable/ic_action_save"
+                fab:show_animation="@anim/fab_jump_from_right" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

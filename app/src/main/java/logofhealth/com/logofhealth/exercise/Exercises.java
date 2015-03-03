@@ -7,6 +7,8 @@ package logofhealth.com.logofhealth.exercise;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -21,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.software.shell.fab.ActionButton;
 
 import java.util.List;
@@ -31,6 +34,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import logofhealth.com.logofhealth.R;
 import logofhealth.com.logofhealth.adapter.MySQLiteHelper;
+import logofhealth.com.logofhealth.adapter.Validation;
 import logofhealth.com.logofhealth.dao.ExerciseDAO;
 import logofhealth.com.logofhealth.extra.WeightFragment;
 
@@ -40,7 +44,7 @@ public class Exercises extends Fragment {
     ListView lv;
     List<ExerciseDAO> data;
     ArrayAdapter adapter;
-    ExerciseDAO e = new ExerciseDAO();
+    EditText exercise;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,70 +58,70 @@ public class Exercises extends Fragment {
         lv = (ListView) v.findViewById(R.id.listView);
         lv.setAdapter(adapter);
         lv.setTextFilterEnabled(true);
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 String options[] = {"Open", "Add to Program", "Delete"};
+                MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
+                mdialog.items(options)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
+                                switch (which) {
+                                    case 0:
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Title", data.get(position).getTitle().toString());
+                                        Intent i = new Intent(getActivity(), WeightFragment.class);
+                                        i.putExtras(bundle);
+                                        startActivity(i);
 
-                final AlertDialog.Builder alertDialogMain = new AlertDialog.Builder(getActivity());
-                alertDialogMain.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Bundle bundle = new Bundle();
-                                bundle.putString("Title", data.get(position).getTitle().toString());
-                                Intent i = new Intent(getActivity(), WeightFragment.class);
-                                i.putExtras(bundle);
-                                startActivity(i);
+                                        break;
+                                    case 1:
+                                        db.addProgram(data.get(position));
+                                        db.getAllMeal();
+                                        adapter.notifyDataSetChanged();
+                                        SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+                                        sad.setTitleText("Success")
+                                                .setContentText(data.get(position).getTitle() + " has been added").show();
 
-                                break;
-                            case 1:
-                                db.addProgram(data.get(position));
-                                db.getAllMeal();
-                                adapter.notifyDataSetChanged();
-                                SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
-                                sad.setTitleText("Success")
-                                        .setContentText(data.get(position).getTitle() + " has been added").show();
+                                        break;
+                                    case 2:
+                                        final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+                                        alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
+                                                .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
+                                                .setConfirmText("Yes")
+                                                .setCancelText("No")
+                                                .showCancelButton(true)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.setTitleText("Deleted!")
+                                                                .setContentText(data.get(position).getTitle() + " has been deleted")
+                                                                .setConfirmText("Ok")
+                                                                .showCancelButton(false)
+                                                                .setConfirmClickListener(null)
+                                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                break;
-                            case 2:
-                                final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                                alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
-                                        .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
-                                        .setConfirmText("Yes")
-                                        .setCancelText("No")
-                                        .showCancelButton(true)
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.setTitleText("Deleted!")
-                                                        .setContentText(data.get(position).getTitle() + " has been deleted")
-                                                        .setConfirmText("Ok")
-                                                        .showCancelButton(false)
-                                                        .setConfirmClickListener(null)
-                                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-
-                                                db.deleteExercise(data.get(position).getExerciseID());
-                                                data.remove(position);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        })
-                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
-                                                        .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
-                                            }
-                                        });
-                                alertDialog.show();
-                                break;
-                        }
-                    }
-                });
-                alertDialogMain.create().show();
+                                                        db.deleteExercise(data.get(position).getExerciseID());
+                                                        data.remove(position);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.dismissWithAnimation();
+                                                        Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
+                                                                .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                                    }
+                                                });
+                                        alertDialog.show();
+                                        break;
+                                }
+                            }
+                        });
+                mdialog.show();
             }
         });
 
@@ -126,7 +130,8 @@ public class Exercises extends Fragment {
             public void onClick(View v) {
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                 alertDialog.setTitle("Add Exercise");
-                final EditText exercise = new EditText(getActivity());
+                exercise = new EditText(getActivity());
+                exercise.getBackground().setColorFilter(Color.rgb(37, 155, 36), PorterDuff.Mode.SRC_IN);
                 alertDialog.setView(exercise)
                         .setCancelable(true)
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,15 +143,17 @@ public class Exercises extends Fragment {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String exerciseName = exercise.getText().toString();
-                                db.addExercise(new ExerciseDAO(exerciseName));
-                                data.add(new ExerciseDAO(exerciseName));
-                                Crouton.makeText(getActivity(), exerciseName + " has been added", Style.CONFIRM).setConfiguration(new Configuration.Builder().setDuration(700).build()).show();
-
+                                if (checkValidation()) {
+                                    String exerciseName = exercise.getText().toString();
+                                    db.addExercise(new ExerciseDAO(exerciseName));
+                                    data.add(new ExerciseDAO(exerciseName));
+                                    Crouton.makeText(getActivity(), exerciseName + " has been added.", Style.CONFIRM).setConfiguration(new Configuration.Builder().setDuration(700).build()).show();
+                                } else {
+                                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                }
                             }
                         })
                         .show();
-
             }
         });
         return v;
@@ -227,66 +234,77 @@ public class Exercises extends Fragment {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
                 String options[] = {"Open", "Add to Program", "Delete"};
+                MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
+                mdialog.items(options)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
+                                switch (which) {
+                                    case 0:
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Title", parent.getAdapter().getItem(position).toString());
+                                        Intent i = new Intent(getActivity(), WeightFragment.class);
+                                        i.putExtras(bundle);
+                                        startActivity(i);
 
-                final AlertDialog.Builder alertDialogMain = new AlertDialog.Builder(getActivity());
-                alertDialogMain.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Bundle bundle = new Bundle();
-                                bundle.putString("Title", parent.getAdapter().getItem(position).toString());
-                                Intent i = new Intent(getActivity(), WeightFragment.class);
-                                i.putExtras(bundle);
-                                startActivity(i);
+                                        break;
+                                    case 1:
+                                        db.addProgram(((ExerciseDAO) parent.getAdapter().getItem(position)));
+                                        db.getAllProgram();
+                                        adapter.notifyDataSetChanged();
+                                        SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+                                        sad.setTitleText("Success")
+                                                .setContentText(((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been added").show();
 
-                                break;
-                            case 1:
-                                db.addProgram(data.get(position));
-                                db.getAllMeal();
-                                adapter.notifyDataSetChanged();
-                                SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
-                                sad.setTitleText("Success")
-                                        .setContentText(data.get(position).getTitle() + " has been added").show();
+                                        break;
+                                    case 2:
+                                        final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+                                        alertDialog.setTitleText("Delete " + ((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + "?")
+                                                .setContentText("Are you sure you want to delete " + ((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " ?")
+                                                .setConfirmText("Yes")
+                                                .setCancelText("No")
+                                                .showCancelButton(true)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.setTitleText("Deleted!")
+                                                                .setContentText(((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been deleted")
+                                                                .setConfirmText("Ok")
+                                                                .showCancelButton(false)
+                                                                .setConfirmClickListener(null)
+                                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                break;
-                            case 2:
-                                final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                                alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
-                                        .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
-                                        .setConfirmText("Yes")
-                                        .setCancelText("No")
-                                        .showCancelButton(true)
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.setTitleText("Deleted!")
-                                                        .setContentText(data.get(position).getTitle() + " has been deleted")
-                                                        .setConfirmText("Ok")
-                                                        .showCancelButton(false)
-                                                        .setConfirmClickListener(null)
-                                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-
-                                                db.deleteExercise(data.get(position).getExerciseID());
-                                                data.remove(position);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        })
-                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
-                                                        .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
-                                            }
-                                        });
-                                alertDialog.show();
-                                break;
-                        }
-                    }
-                });
-                alertDialogMain.create().show();
+                                                        db.deleteExercise(data.get(position).getExerciseID());
+                                                        db.deleteExercise((((ExerciseDAO) parent.getAdapter().getItem(position)).getExerciseID()));
+                                                        data.remove(position);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.dismissWithAnimation();
+                                                        Crouton.makeText(getActivity(), parent.getAdapter().getItem(position).toString() + " was not deleted", Style.INFO)
+                                                                .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                                    }
+                                                });
+                                        alertDialog.show();
+                                        break;
+                                }
+                            }
+                        });
+                mdialog.show();
             }
         });
+    }
+
+    //validation method
+    private boolean checkValidation() {
+        boolean value = true;
+
+        if (!Validation.hasText(exercise))
+            value = false;
+
+        return value;
     }
 }

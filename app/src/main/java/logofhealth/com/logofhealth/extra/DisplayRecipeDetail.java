@@ -2,7 +2,11 @@ package logofhealth.com.logofhealth.extra;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.software.shell.fab.ActionButton;
 
 import logofhealth.com.logofhealth.R;
 
@@ -13,6 +17,7 @@ import logofhealth.com.logofhealth.R;
 public class DisplayRecipeDetail extends Activity {
 
     private TextView titleBar, ingredients, instructions;
+    private ActionButton editButton, saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,29 @@ public class DisplayRecipeDetail extends Activity {
         titleBar.setText(title);
         ingredients.setText(ingred);
         instructions.setText(instrut);
-    }
 
+        editButton = (ActionButton) findViewById(R.id.edit_button);
+        saveButton = (ActionButton) findViewById(R.id.save_button);
+
+        editButton.show();
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editButton.hide();
+                saveButton.show();
+                Toast.makeText(getApplication(),"Edit", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveButton.hide();
+                editButton.show();
+                Toast.makeText(getApplication(),"Save", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
+
+

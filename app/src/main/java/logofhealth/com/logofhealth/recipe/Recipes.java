@@ -1,7 +1,5 @@
 package logofhealth.com.logofhealth.recipe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
@@ -52,71 +52,72 @@ public class Recipes extends Fragment {
         lv = (ListView) v.findViewById(R.id.listView2);
         lv.setAdapter(adapter);
         lv.setTextFilterEnabled(true);
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 String options[] = {"Open", "Add to Meal", "Delete"};
-                final AlertDialog.Builder alertDialogMain = new AlertDialog.Builder(getActivity());
-                alertDialogMain.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Bundle bundle = new Bundle();
-                                bundle.putString("Title", data.get(position).getTitle().toString());
-                                bundle.putString("Ingredients", data.get(position).getIngredients().toString());
-                                bundle.putString("Instructions", data.get(position).getInstructions().toString());
-                                Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
-                                i.putExtras(bundle);
-                                startActivity(i);
+                MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
+                mdialog.items(options)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
+                                switch (which) {
+                                    case 0:
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Title", data.get(position).getTitle().toString());
+                                        bundle.putString("Ingredients", data.get(position).getIngredients().toString());
+                                        bundle.putString("Instructions", data.get(position).getInstructions().toString());
+                                        Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
+                                        i.putExtras(bundle);
+                                        startActivity(i);
 
-                                break;
-                            case 1:
-                                db.addMeal(data.get(position));
-                                db.getAllMeal();
-                                adapter.notifyDataSetChanged();
-                                SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
-                                sad.setTitleText("Success")
-                                        .setContentText(data.get(position).getTitle() + " has been added").show();
+                                        break;
+                                    case 1:
+                                        db.addMeal(data.get(position));
+                                        db.getAllMeal();
+                                        adapter.notifyDataSetChanged();
+                                        SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+                                        sad.setTitleText("Success")
+                                                .setContentText(data.get(position).getTitle() + " has been added").show();
 
-                                break;
-                            case 2:
-                                final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                                alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
-                                        .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
-                                        .setConfirmText("Yes")
-                                        .setCancelText("No")
-                                        .showCancelButton(true)
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.setTitleText("Deleted!")
-                                                        .setContentText(data.get(position).getTitle() + " has been deleted")
-                                                        .setConfirmText("Ok")
-                                                        .showCancelButton(false)
-                                                        .setConfirmClickListener(null)
-                                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                        break;
+                                    case 2:
+                                        final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+                                        alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
+                                                .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
+                                                .setConfirmText("Yes")
+                                                .setCancelText("No")
+                                                .showCancelButton(true)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.setTitleText("Deleted!")
+                                                                .setContentText(data.get(position).getTitle() + " has been deleted")
+                                                                .setConfirmText("Ok")
+                                                                .showCancelButton(false)
+                                                                .setConfirmClickListener(null)
+                                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                                db.deleteRecipe(data.get(position).getRecipeID());
-                                                data.remove(position);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        })
-                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
-                                                        .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
-                                            }
-                                        });
-                                alertDialog.show();
-                                break;
-                        }
-                    }
-                });
-                alertDialogMain.create().show();
+                                                        db.deleteRecipe(data.get(position).getRecipeID());
+                                                        data.remove(position);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.dismissWithAnimation();
+                                                        Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
+                                                                .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                                    }
+                                                });
+                                        alertDialog.show();
+                                        break;
+                                }
+                            }
+                        });
+                mdialog.show();
             }
         });
 
@@ -199,65 +200,67 @@ public class Recipes extends Fragment {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
                 String options[] = {"Open", "Add to Meal", "Delete"};
-                final AlertDialog.Builder alertDialogMain = new AlertDialog.Builder(getActivity());
-                alertDialogMain.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                Bundle bundle = new Bundle();
-                                bundle.putString("Title", parent.getAdapter().getItem(position).toString());
-                                bundle.putString("Ingredients", ((RecipeDAO) parent.getAdapter().getItem(position)).getIngredients().toString());
-                                bundle.putString("Instructions", ((RecipeDAO) parent.getAdapter().getItem(position)).getInstructions().toString());
-                                Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
-                                i.putExtras(bundle);
-                                startActivity(i);
+                MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
+                mdialog.items(options)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
+                                switch (which) {
+                                    case 0:
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Title", parent.getAdapter().getItem(position).toString());
+                                        bundle.putString("Ingredients", ((RecipeDAO) parent.getAdapter().getItem(position)).getIngredients().toString());
+                                        bundle.putString("Instructions", ((RecipeDAO) parent.getAdapter().getItem(position)).getInstructions().toString());
+                                        Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
+                                        i.putExtras(bundle);
+                                        startActivity(i);
 
-                                break;
-                            case 1:
-                                db.addMeal(data.get(position));
-                                db.getAllMeal();
-                                SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
-                                sad.setTitleText("Success")
-                                        .setContentText(data.get(position).getTitle() + " has been added").show();
+                                        break;
+                                    case 1:
+                                        db.addMeal((RecipeDAO) parent.getAdapter().getItem(position));
+                                        db.getAllMeal();
+                                        adapter.notifyDataSetChanged();
+                                        SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+                                        sad.setTitleText("Success")
+                                                .setContentText((((RecipeDAO) parent.getAdapter().getItem(position)).getTitle()) + " has been added").show();
 
-                                break;
-                            case 2:
-                                final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                                alertDialog.setTitleText("Delete " + data.get(position).getTitle() + "?")
-                                        .setContentText("Are you sure you want to delete " + data.get(position).getTitle() + " ?")
-                                        .setConfirmText("Yes")
-                                        .setCancelText("No")
-                                        .showCancelButton(true)
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.setTitleText("Deleted!")
-                                                        .setContentText(data.get(position).getTitle() + " has been deleted")
-                                                        .setConfirmText("Ok")
-                                                        .showCancelButton(false)
-                                                        .setConfirmClickListener(null)
-                                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                        break;
+                                    case 2:
+                                        final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+                                        alertDialog.setTitleText("Delete " + ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + "?")
+                                                .setContentText("Are you sure you want to delete " + ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " ?")
+                                                .setConfirmText("Yes")
+                                                .setCancelText("No")
+                                                .showCancelButton(true)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.setTitleText("Deleted!")
+                                                                .setContentText(((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been deleted")
+                                                                .setConfirmText("Ok")
+                                                                .showCancelButton(false)
+                                                                .setConfirmClickListener(null)
+                                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                                db.deleteRecipe(data.get(position).getRecipeID());
-                                                data.remove(position);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        })
-                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                Crouton.makeText(getActivity(), data.get(position).getTitle() + " was not deleted", Style.INFO)
-                                                        .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
-                                            }
-                                        });
-                                alertDialog.show();
-                                break;
-                        }
-                    }
-                });
-                alertDialogMain.create().show();
+                                                        db.deleteRecipe((((RecipeDAO) parent.getAdapter().getItem(position)).getRecipeID()));
+                                                        data.remove(position);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.dismissWithAnimation();
+                                                        Crouton.makeText(getActivity(), ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " was not deleted", Style.INFO)
+                                                                .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                                    }
+                                                });
+                                        alertDialog.show();
+                                        break;
+                                }
+                            }
+                        });
+                mdialog.show();
             }
         });
     }

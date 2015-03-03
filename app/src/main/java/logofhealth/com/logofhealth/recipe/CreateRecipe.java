@@ -57,18 +57,14 @@ public class CreateRecipe extends Fragment {
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     title_text.startAnimation(shake);
                     title_text.setError("Missing Title");
-                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(700).build()).show();
+                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
                     title_text.requestFocus();
                     ingredients_text.startAnimation(shake);
                     ingredients_text.setError("Missing Description");
                     ingredients_text.requestFocus();
                 }
-
-
             }
         });
-
-
         return v;
     }
 
