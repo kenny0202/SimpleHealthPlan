@@ -1,8 +1,8 @@
 package logofhealth.com.logofhealth.menu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import logofhealth.com.logofhealth.R;
 
-public class MainMenu extends Activity implements View.OnClickListener {
+public class MainMenu extends ActionBarActivity implements View.OnClickListener {
 
     Button recipeButton, exerciseButton;
 

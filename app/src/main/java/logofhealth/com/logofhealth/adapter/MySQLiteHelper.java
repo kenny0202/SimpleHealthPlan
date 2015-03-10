@@ -22,6 +22,37 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 8;
     // Database Name
     private static final String DATABASE_NAME = "HealthDB";
+    private static final String TABLE_EXERCISE = "exercise";
+    //column names
+    private static final String KEY_ID = "id";
+    private static final String KEY_TITLE = "title";
+
+    //START OF CRUD OPERATION FOR EXERCISE
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_DESCRIPTION};
+    //START OF CRUD FOR RECIPE
+    private static final String TABLE_RECIPE = "recipe";
+    //column names
+    private static final String KEY_RID = "id";
+    private static final String KEY_RTITLE = "title";
+    private static final String KEY_RINGREDIENTS = "ingredients";
+    private static final String KEY_RINSTRUCTIONS = "instructions";
+    private static final String[] RCOLUMNS = {KEY_RID, KEY_RTITLE, KEY_RINGREDIENTS, KEY_RINSTRUCTIONS};
+    //BEGIN CRUD FOR MEALPLAN
+    private static final String TABLE_MEALPLAN = "mealplan";
+    //column names
+    private static final String KEY_MID = "id";
+    private static final String KEY_MTITLE = "title";
+    //END OF CRUD FOR EXERCISE
+    private static final String KEY_MINGREDIENTS = "ingredients";
+    private static final String[] MCOLUMNS = {KEY_MID, KEY_MTITLE, KEY_MINGREDIENTS};
+    //BEGIN CRUD FOR MEALPLAN
+    private static final String TABLE_PROGRAM = "program";
+    //column names
+    private static final String KEY_PID = "id";
+    private static final String KEY_PTITLE = "title";
+    private static final String KEY_PDESCRIPTION = "description";
+    private static final String[] PCOLUMNS = {KEY_PID, KEY_PTITLE, KEY_PDESCRIPTION};
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -70,16 +101,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    //START OF CRUD OPERATION FOR EXERCISE
-
-    private static final String TABLE_EXERCISE = "exercise";
-    //column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_DESCRIPTION = "description";
-
-    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_DESCRIPTION};
-
     public void addExercise(ExerciseDAO e) {
         Log.d("addExercise", e.toString());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -113,6 +134,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         return e;
     }
+    //END OF CRUD FOR RECIPE
 
     public List<ExerciseDAO> getAllExercise() {
         List<ExerciseDAO> exercise = new ArrayList<ExerciseDAO>();
@@ -180,18 +202,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_EXERCISE, KEY_ID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
-    //END OF CRUD FOR EXERCISE
-
-
-    //START OF CRUD FOR RECIPE
-    private static final String TABLE_RECIPE = "recipe";
-    //column names
-    private static final String KEY_RID = "id";
-    private static final String KEY_RTITLE = "title";
-    private static final String KEY_RINGREDIENTS = "ingredients";
-    private static final String KEY_RINSTRUCTIONS = "instructions";
-
-    private static final String[] RCOLUMNS = {KEY_RID, KEY_RTITLE, KEY_RINGREDIENTS, KEY_RINSTRUCTIONS};
 
     public void addRecipe(RecipeDAO r) {
         Log.d("addRecipe", r.toString());
@@ -292,17 +302,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_RECIPE, KEY_RID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
-    //END OF CRUD FOR RECIPE
-
-
-    //BEGIN CRUD FOR MEALPLAN
-    private static final String TABLE_MEALPLAN = "mealplan";
-    //column names
-    private static final String KEY_MID = "id";
-    private static final String KEY_MTITLE = "title";
-    private static final String KEY_MINGREDIENTS = "ingredients";
-
-    private static final String[] MCOLUMNS = {KEY_MID, KEY_MTITLE, KEY_MINGREDIENTS};
 
     public void addMeal(RecipeDAO r) {
         Log.d("addRecipe", r.toString());
@@ -314,6 +313,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.d("Data Added", r.toString());
         db.close();
     }
+
+    //END CRUD FOR MEAL
+
+    //BEGIN CRUD PROGRAM
 
     public RecipeDAO getMeal(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -398,19 +401,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_MEALPLAN, KEY_MID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
-
-    //END CRUD FOR MEAL
-
-    //BEGIN CRUD PROGRAM
-
-    //BEGIN CRUD FOR MEALPLAN
-    private static final String TABLE_PROGRAM = "program";
-    //column names
-    private static final String KEY_PID = "id";
-    private static final String KEY_PTITLE = "title";
-    private static final String KEY_PDESCRIPTION = "description";
-
-    private static final String[] PCOLUMNS = {KEY_PID, KEY_PTITLE, KEY_PDESCRIPTION};
 
     public void addProgram(ExerciseDAO r) {
         Log.d("addRecipe", r.toString());

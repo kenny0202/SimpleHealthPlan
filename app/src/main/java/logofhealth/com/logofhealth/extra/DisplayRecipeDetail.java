@@ -46,7 +46,7 @@ public class DisplayRecipeDetail extends Activity {
             public void onClick(View v) {
                 editButton.hide();
                 saveButton.show();
-                Toast.makeText(getApplication(),"Edit", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "Edit", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -55,7 +55,7 @@ public class DisplayRecipeDetail extends Activity {
             public void onClick(View v) {
                 saveButton.hide();
                 editButton.show();
-                Toast.makeText(getApplication(),"Save", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "Save", Toast.LENGTH_SHORT).show();
             }
         });
     }
