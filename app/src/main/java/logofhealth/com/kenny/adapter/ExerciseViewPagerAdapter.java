@@ -1,11 +1,11 @@
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import logofhealth.com.logofhealth.exercise.Exercises;
-import logofhealth.com.logofhealth.exercise.Programs;
+import logofhealth.com.kenny.exercise.Exercises;
+import logofhealth.com.kenny.exercise.Programs;
 
 /**
  * Created by Kenny on 2/15/2015.

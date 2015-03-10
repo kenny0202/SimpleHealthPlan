@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import logofhealth.com.logofhealth.dao.ExerciseDAO;
-import logofhealth.com.logofhealth.dao.RecipeDAO;
+import logofhealth.com.kenny.dao.ExerciseDAO;
+import logofhealth.com.kenny.dao.RecipeDAO;
 
 /**
  * Created by Kenny on 2/16/2015.

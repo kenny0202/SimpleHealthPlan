@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.R;
 import android.content.Context;

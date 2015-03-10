@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.menu;
+package logofhealth.com.kenny.menu;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -7,9 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import logofhealth.com.logofhealth.R;
-import logofhealth.com.logofhealth.adapter.ExerciseViewPagerAdapter;
-import logofhealth.com.logofhealth.adapter.SlidingTabLayout;
+import logofhealth.com.kenny.R;
+import logofhealth.com.kenny.adapter.ExerciseViewPagerAdapter;
+import logofhealth.com.kenny.adapter.SlidingTabLayout;
 
 /**
  * Created by Kenny on 2/15/2015.

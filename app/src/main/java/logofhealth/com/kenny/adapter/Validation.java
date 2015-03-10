@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.widget.EditText;
 

@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.recipe;
+package logofhealth.com.kenny.recipe;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,10 +14,10 @@ import com.software.shell.fab.ActionButton;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import logofhealth.com.logofhealth.R;
-import logofhealth.com.logofhealth.adapter.MySQLiteHelper;
-import logofhealth.com.logofhealth.adapter.Validation;
-import logofhealth.com.logofhealth.dao.RecipeDAO;
+import logofhealth.com.kenny.R;
+import logofhealth.com.kenny.adapter.MySQLiteHelper;
+import logofhealth.com.kenny.adapter.Validation;
+import logofhealth.com.kenny.dao.RecipeDAO;
 
 /**
  * Created by Kenny on 2/16/2015.

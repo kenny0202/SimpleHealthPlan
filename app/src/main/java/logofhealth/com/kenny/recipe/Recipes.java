@@ -1,14 +1,6 @@
-package logofhealth.com.logofhealth.exercise;
+package logofhealth.com.kenny.recipe;
 
-/**
- * Created by Kenny on 2/16/2015.
- */
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -20,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.software.shell.fab.ActionButton;
 
 import java.util.List;
 
@@ -32,37 +22,41 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import logofhealth.com.logofhealth.R;
-import logofhealth.com.logofhealth.adapter.MySQLiteHelper;
-import logofhealth.com.logofhealth.adapter.Validation;
-import logofhealth.com.logofhealth.dao.ExerciseDAO;
-import logofhealth.com.logofhealth.extra.WeightFragment;
+import logofhealth.com.kenny.R;
+import logofhealth.com.kenny.adapter.MySQLiteHelper;
+import logofhealth.com.kenny.dao.RecipeDAO;
+import logofhealth.com.kenny.extra.DisplayRecipeDetail;
 
-public class Exercises extends Fragment {
+/**
+ * Created by Kenny on 2/16/2015.
+ */
+public class Recipes extends Fragment {
 
     MySQLiteHelper db;
     ListView lv;
-    List<ExerciseDAO> data;
+    List<RecipeDAO> data;
     ArrayAdapter adapter;
-    EditText exercise;
+
+    public Recipes() {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.exercise_fragment, container, false);
+        final View v = inflater.inflate(R.layout.recipe_fragment, container, false);
+
         db = new MySQLiteHelper(getActivity());
-        ActionButton actionButton = (ActionButton) v.findViewById(R.id.action_button);
-        actionButton.show();
-        data = db.getAllExercise();
+        data = db.getAllRecipe();
         adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, data);
-        lv = (ListView) v.findViewById(R.id.listView);
+        lv = (ListView) v.findViewById(R.id.listView2);
         lv.setAdapter(adapter);
         lv.setTextFilterEnabled(true);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                String options[] = {"Open", "Add to Program", "Delete"};
+                String options[] = {"Open", "Add to Meal", "Delete"};
                 MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
                 mdialog.items(options)
                         .itemsCallback(new MaterialDialog.ListCallback() {
@@ -72,13 +66,15 @@ public class Exercises extends Fragment {
                                     case 0:
                                         Bundle bundle = new Bundle();
                                         bundle.putString("Title", data.get(position).getTitle().toString());
-                                        Intent i = new Intent(getActivity(), WeightFragment.class);
+                                        bundle.putString("Ingredients", data.get(position).getIngredients().toString());
+                                        bundle.putString("Instructions", data.get(position).getInstructions().toString());
+                                        Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
                                         i.putExtras(bundle);
                                         startActivity(i);
 
                                         break;
                                     case 1:
-                                        db.addProgram(data.get(position));
+                                        db.addMeal(data.get(position));
                                         db.getAllMeal();
                                         adapter.notifyDataSetChanged();
                                         SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
@@ -103,7 +99,7 @@ public class Exercises extends Fragment {
                                                                 .setConfirmClickListener(null)
                                                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                                        db.deleteExercise(data.get(position).getExerciseID());
+                                                        db.deleteRecipe(data.get(position).getRecipeID());
                                                         data.remove(position);
                                                         adapter.notifyDataSetChanged();
                                                     }
@@ -125,37 +121,6 @@ public class Exercises extends Fragment {
             }
         });
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                alertDialog.setTitle("Add Exercise");
-                exercise = new EditText(getActivity());
-                exercise.getBackground().setColorFilter(Color.rgb(37, 155, 36), PorterDuff.Mode.SRC_IN);
-                alertDialog.setView(exercise)
-                        .setCancelable(true)
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (checkValidation()) {
-                                    String exerciseName = exercise.getText().toString();
-                                    db.addExercise(new ExerciseDAO(exerciseName));
-                                    data.add(new ExerciseDAO(exerciseName));
-                                    Crouton.makeText(getActivity(), exerciseName + " has been added.", Style.CONFIRM).setConfiguration(new Configuration.Builder().setDuration(700).build()).show();
-                                } else {
-                                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
-                                }
-                            }
-                        })
-                        .show();
-            }
-        });
         return v;
     }
 
@@ -166,9 +131,9 @@ public class Exercises extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.exercise_menu, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_exercise).getActionView();
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.recipe_menu, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_recipe).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -178,7 +143,7 @@ public class Exercises extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
-                FilterExercise();
+                FilterRecipe();
                 return true;
             }
         });
@@ -187,15 +152,12 @@ public class Exercises extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
-            case R.id.search_exercise:
-
-                return true;
-
-            case R.id.delete_exercise:
-                final SweetAlertDialog exerciseDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                exerciseDialog.setTitleText("Delete exercises?")
-                        .setContentText("Are you sure you want to delete all exercises?")
+            case R.id.delete_recipe:
+                final SweetAlertDialog recipeDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+                recipeDialog.setTitleText("Delete recipes?")
+                        .setContentText("Are you sure you want to delete all recipes?")
                         .setConfirmText("Yes")
                         .setCancelText("No")
                         .showCancelButton(true)
@@ -203,13 +165,13 @@ public class Exercises extends Fragment {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.setTitleText("Deleted!")
-                                        .setContentText("Exercises has been deleted")
+                                        .setContentText("Recipes has been deleted")
                                         .setConfirmText("Ok")
                                         .showCancelButton(false)
                                         .setConfirmClickListener(null)
                                         .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                db.deleteAllExercise();
-                                data.clear();
+                                db.deleteAllRecipe();
+                                data.removeAll(data);
                                 adapter.notifyDataSetChanged();
                             }
                         })
@@ -217,11 +179,15 @@ public class Exercises extends Fragment {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismissWithAnimation();
-                                Crouton.makeText(getActivity(), "Exercises was not deleted", Style.INFO)
+                                Crouton.makeText(getActivity(), "Recipes was not deleted", Style.INFO)
                                         .setConfiguration(new de.keyboardsurfer.android.widget.crouton.Configuration.Builder().setDuration(1000).build()).show();
                             }
                         });
-                exerciseDialog.show();
+                recipeDialog.show();
+                return true;
+
+            case R.id.search_recipe:
+
                 return true;
 
             default:
@@ -229,11 +195,11 @@ public class Exercises extends Fragment {
         }
     }
 
-    private void FilterExercise() {
+    private void FilterRecipe() {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-                String options[] = {"Open", "Add to Program", "Delete"};
+                String options[] = {"Open", "Add to Meal", "Delete"};
                 MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
                 mdialog.items(options)
                         .itemsCallback(new MaterialDialog.ListCallback() {
@@ -243,24 +209,26 @@ public class Exercises extends Fragment {
                                     case 0:
                                         Bundle bundle = new Bundle();
                                         bundle.putString("Title", parent.getAdapter().getItem(position).toString());
-                                        Intent i = new Intent(getActivity(), WeightFragment.class);
+                                        bundle.putString("Ingredients", ((RecipeDAO) parent.getAdapter().getItem(position)).getIngredients().toString());
+                                        bundle.putString("Instructions", ((RecipeDAO) parent.getAdapter().getItem(position)).getInstructions().toString());
+                                        Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
                                         i.putExtras(bundle);
                                         startActivity(i);
 
                                         break;
                                     case 1:
-                                        db.addProgram(((ExerciseDAO) parent.getAdapter().getItem(position)));
-                                        db.getAllProgram();
+                                        db.addMeal((RecipeDAO) parent.getAdapter().getItem(position));
+                                        db.getAllMeal();
                                         adapter.notifyDataSetChanged();
                                         SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
                                         sad.setTitleText("Success")
-                                                .setContentText(((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been added").show();
+                                                .setContentText((((RecipeDAO) parent.getAdapter().getItem(position)).getTitle()) + " has been added").show();
 
                                         break;
                                     case 2:
                                         final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-                                        alertDialog.setTitleText("Delete " + ((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + "?")
-                                                .setContentText("Are you sure you want to delete " + ((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " ?")
+                                        alertDialog.setTitleText("Delete " + ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + "?")
+                                                .setContentText("Are you sure you want to delete " + ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " ?")
                                                 .setConfirmText("Yes")
                                                 .setCancelText("No")
                                                 .showCancelButton(true)
@@ -268,14 +236,13 @@ public class Exercises extends Fragment {
                                                     @Override
                                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                         sweetAlertDialog.setTitleText("Deleted!")
-                                                                .setContentText(((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been deleted")
+                                                                .setContentText(((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been deleted")
                                                                 .setConfirmText("Ok")
                                                                 .showCancelButton(false)
                                                                 .setConfirmClickListener(null)
                                                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 
-                                                        db.deleteExercise(data.get(position).getExerciseID());
-                                                        db.deleteExercise((((ExerciseDAO) parent.getAdapter().getItem(position)).getExerciseID()));
+                                                        db.deleteRecipe((((RecipeDAO) parent.getAdapter().getItem(position)).getRecipeID()));
                                                         data.remove(position);
                                                         adapter.notifyDataSetChanged();
                                                     }
@@ -284,7 +251,7 @@ public class Exercises extends Fragment {
                                                     @Override
                                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                         sweetAlertDialog.dismissWithAnimation();
-                                                        Crouton.makeText(getActivity(), parent.getAdapter().getItem(position).toString() + " was not deleted", Style.INFO)
+                                                        Crouton.makeText(getActivity(), ((RecipeDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " was not deleted", Style.INFO)
                                                                 .setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
                                                     }
                                                 });
@@ -296,15 +263,5 @@ public class Exercises extends Fragment {
                 mdialog.show();
             }
         });
-    }
-
-    //validation method
-    private boolean checkValidation() {
-        boolean value = true;
-
-        if (!Validation.hasText(exercise))
-            value = false;
-
-        return value;
     }
 }

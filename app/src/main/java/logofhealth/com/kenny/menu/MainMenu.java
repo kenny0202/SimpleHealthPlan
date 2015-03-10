@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.menu;
+package logofhealth.com.kenny.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import logofhealth.com.logofhealth.R;
+import logofhealth.com.kenny.R;
 
 public class MainMenu extends ActionBarActivity implements View.OnClickListener {
 

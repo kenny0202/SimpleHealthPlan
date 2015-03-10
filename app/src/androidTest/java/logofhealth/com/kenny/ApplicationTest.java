@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth;
+package logofhealth.com.kenny;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -31,7 +31,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import logofhealth.com.logofhealth.R;
+import logofhealth.com.kenny.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to

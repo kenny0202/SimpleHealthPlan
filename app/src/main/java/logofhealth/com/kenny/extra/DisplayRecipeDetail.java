@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.extra;
+package logofhealth.com.kenny.extra;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.software.shell.fab.ActionButton;
 
-import logofhealth.com.logofhealth.R;
+import logofhealth.com.kenny.R;
 
 
 /**

@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.dao;
+package logofhealth.com.kenny.dao;
 
 /**
  * Created by Kenny on 2/16/2015.

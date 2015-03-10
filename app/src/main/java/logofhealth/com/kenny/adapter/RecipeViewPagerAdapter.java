@@ -1,12 +1,12 @@
-package logofhealth.com.logofhealth.adapter;
+package logofhealth.com.kenny.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import logofhealth.com.logofhealth.recipe.CreateRecipe;
-import logofhealth.com.logofhealth.recipe.MealPlan;
-import logofhealth.com.logofhealth.recipe.Recipes;
+import logofhealth.com.kenny.recipe.CreateRecipe;
+import logofhealth.com.kenny.recipe.MealPlan;
+import logofhealth.com.kenny.recipe.Recipes;
 
 /**
  * Created by Kenny on 2/15/2015.

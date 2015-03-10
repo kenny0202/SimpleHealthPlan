@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.exercise;
+package logofhealth.com.kenny.exercise;
 
 /**
  * Created by Kenny on 2/16/2015.
@@ -21,9 +21,9 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import logofhealth.com.logofhealth.R;
-import logofhealth.com.logofhealth.adapter.MySQLiteHelper;
-import logofhealth.com.logofhealth.dao.ExerciseDAO;
+import logofhealth.com.kenny.R;
+import logofhealth.com.kenny.adapter.MySQLiteHelper;
+import logofhealth.com.kenny.dao.ExerciseDAO;
 
 public class Programs extends Fragment {
 

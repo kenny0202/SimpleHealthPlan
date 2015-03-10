@@ -1,4 +1,4 @@
-package logofhealth.com.logofhealth.extra;
+package logofhealth.com.kenny.extra;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import logofhealth.com.logofhealth.R;
+import logofhealth.com.kenny.R;
 
 /**
  * Created by Kenny on 2/16/2015.
