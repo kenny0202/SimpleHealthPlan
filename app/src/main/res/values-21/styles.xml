@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RecipeTheme" parent="AppTheme.Base">
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+    </style>
+
+    <style name="ExerciseTheme" parent="AppTheme.Base">
+        <item name="colorPrimary">@color/ColorExercisePrimary</item>
+        <item name="colorPrimaryDark">@color/ColorExerciseDark</item>
+    </style>
+
+    <style name="DisplayTheme" parent="AppTheme.Base">
+        <item name="colorPrimary">@color/displayPrimary</item>
+        <item name="colorPrimaryDark">@color/displayDark</item>
+    </style>
+
+</resources>

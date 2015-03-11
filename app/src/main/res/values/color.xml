@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ColorPrimary">#5677fc</color>
-    <color name="ColorPrimaryDark">#303f9f</color>
+    <color name="ColorPrimaryDark">#3b50ce</color>
     <color name="tabsScrollColor">#2a36b1</color>
+    <color name="accentColor">#f44336</color>
 
     <color name="ColorExercisePrimary">#e51c23</color>
-    <color name="ColorExerciseDark">#b0120a</color>
+    <color name="ColorExerciseDark">#c41411</color>
     <color name="exerciseTabScrollColor">#b0120a</color>
 
     <color name="counter_text_bg">#626262</color>
@@ -25,4 +26,7 @@
     <color name="activate_text_color">#FF666666</color>
     <color name="deactivate_text_color">#FFCCCCCC</color>
     <color name="transparent">#00000000</color>
+
+    <color name="displayPrimary">#259b24</color>
+    <color name="displayDark">#056f00</color>
 </resources>

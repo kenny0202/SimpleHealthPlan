@@ -1,8 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="AppTheme.Base">
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <style name="RecipeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+    </style>
+
+    <style name="ExerciseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ColorExercisePrimary</item>
+        <item name="colorPrimaryDark">@color/ColorExerciseDark</item>
+    </style>
+
+    <style name="DisplayTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/displayPrimary</item>
+        <item name="colorPrimaryDark">@color/displayDark</item>
     </style>
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">

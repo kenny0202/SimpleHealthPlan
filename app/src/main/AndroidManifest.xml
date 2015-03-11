@@ -21,15 +21,18 @@
 
         <activity
             android:name="logofhealth.com.kenny.menu.RecipeMenu"
-            android:label="Recipes"></activity>
+            android:label="Recipes"
+            android:theme="@style/RecipeTheme"></activity>
 
         <activity
             android:name="logofhealth.com.kenny.menu.ExerciseMenu"
-            android:label="Exercise"></activity>
+            android:label="Exercise"
+            android:theme="@style/ExerciseTheme"></activity>
 
         <activity
             android:name=".recipe.DisplayRecipeDetail"
-            android:label=""></activity>
+            android:label=""
+            android:theme="@style/DisplayTheme"></activity>
     </application>
 
 </manifest>
