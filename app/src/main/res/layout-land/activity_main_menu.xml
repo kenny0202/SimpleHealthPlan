@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Menu"
+        android:text="@string/main_menu"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000" />
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/exercise_button"
         android:layout_toLeftOf="@+id/reps"
-        android:text="Recipe"
+        android:text="@string/recipe_button"
         android:textColor="#000000"
         android:textSize="25sp"
         fbutton:buttonColor="@color/fbutton_color_peter_river"
@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="35dp"
         android:layout_toRightOf="@+id/reps"
-        android:text="Exercise"
+        android:text="@string/exercise_button"
         android:textColor="#000000"
         android:textSize="25sp"
         fbutton:buttonColor="@color/fbutton_color_alizarin"

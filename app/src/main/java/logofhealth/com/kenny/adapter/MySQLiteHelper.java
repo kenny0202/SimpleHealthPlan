@@ -19,40 +19,37 @@ import logofhealth.com.kenny.dao.RecipeDAO;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 1;
     // Database Name
     private static final String DATABASE_NAME = "HealthDB";
+
+    //columns for exercise
     private static final String TABLE_EXERCISE = "exercise";
-    //column names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
+    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE};
 
-    //START OF CRUD OPERATION FOR EXERCISE
-    private static final String KEY_DESCRIPTION = "description";
-    private static final String[] COLUMNS = {KEY_ID, KEY_TITLE, KEY_DESCRIPTION};
-    //START OF CRUD FOR RECIPE
+    //columns for recipe
     private static final String TABLE_RECIPE = "recipe";
-    //column names
     private static final String KEY_RID = "id";
     private static final String KEY_RTITLE = "title";
     private static final String KEY_RINGREDIENTS = "ingredients";
     private static final String KEY_RINSTRUCTIONS = "instructions";
     private static final String[] RCOLUMNS = {KEY_RID, KEY_RTITLE, KEY_RINGREDIENTS, KEY_RINSTRUCTIONS};
-    //BEGIN CRUD FOR MEALPLAN
+
+    //columns for mealplan
     private static final String TABLE_MEALPLAN = "mealplan";
-    //column names
     private static final String KEY_MID = "id";
     private static final String KEY_MTITLE = "title";
-    //END OF CRUD FOR EXERCISE
+
     private static final String KEY_MINGREDIENTS = "ingredients";
     private static final String[] MCOLUMNS = {KEY_MID, KEY_MTITLE, KEY_MINGREDIENTS};
-    //BEGIN CRUD FOR MEALPLAN
+
+    //columns for program
     private static final String TABLE_PROGRAM = "program";
-    //column names
     private static final String KEY_PID = "id";
     private static final String KEY_PTITLE = "title";
-    private static final String KEY_PDESCRIPTION = "description";
-    private static final String[] PCOLUMNS = {KEY_PID, KEY_PTITLE, KEY_PDESCRIPTION};
+    private static final String[] PCOLUMNS = {KEY_PID, KEY_PTITLE};
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,7 +68,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String CREATE_EXERCISE_TABLE = "CREATE TABLE exercise ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, " +
-                "description TEXT, " +
                 " UNIQUE (title))";
 
         String CREATE_MEALPLAN_TABLE = "CREATE TABLE mealplan ( " +
@@ -101,12 +97,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
+    //START OF CRUD OPERATION FOR EXERCISE
     public void addExercise(ExerciseDAO e) {
         Log.d("addExercise", e.toString());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, e.getTitle());
-        values.put(KEY_DESCRIPTION, e.getDescription());
         db.insert(TABLE_EXERCISE, null, values);
         db.close();
     }
@@ -128,24 +124,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         ExerciseDAO e = new ExerciseDAO();
         e.setExerciseID(Integer.parseInt(cursor.getString(0)));
         e.setTitle(cursor.getString(1));
-        e.setDescription(cursor.getString(2));
-
-        Log.d("getExercise(" + id + ")", e.toString());
-
+        db.close();
         return e;
     }
-    //END OF CRUD FOR RECIPE
 
     public List<ExerciseDAO> getAllExercise() {
         List<ExerciseDAO> exercise = new ArrayList<ExerciseDAO>();
 
-
         String query = "SELECT  * FROM " + TABLE_EXERCISE + " ORDER BY " + KEY_TITLE + " ASC ";
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
 
         ExerciseDAO e = null;
         if (cursor.moveToFirst()) {
@@ -153,14 +142,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 e = new ExerciseDAO();
                 e.setExerciseID(Integer.parseInt(cursor.getString(0)));
                 e.setTitle(cursor.getString(1));
-                e.setDescription(cursor.getString(2));
-
                 exercise.add(e);
             } while (cursor.moveToNext());
         }
-
-        Log.d("getAllExercise()", exercise.toString());
-
+        db.close();
         return exercise;
     }
 
@@ -169,31 +154,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("title", e.getTitle());
-        values.put("description", e.getDescription());
-
 
         int i = db.update(TABLE_EXERCISE, //table
                 values, // column/value
                 KEY_ID + " = ?", // selections
                 new String[]{String.valueOf(e.getExerciseID())});
-
         db.close();
-
         return i;
     }
 
     public void deleteAllExercise() {
-
-        ExerciseDAO r = new ExerciseDAO();
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EXERCISE, null, null);
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_EXERCISE + "'");
-
-        /*
-        db.delete(TABLE_EXERCISE,
-                KEY_RID+" = ?",
-                new String[] { String.valueOf(r.getExerciseId()) });
-        */
         db.close();
     }
 
@@ -202,7 +175,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_EXERCISE, KEY_ID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
+    //END OF CRUD FOR EXERCISE
 
+    //START OF CRUD FOR RECIPE
     public void addRecipe(RecipeDAO r) {
         Log.d("addRecipe", r.toString());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -234,22 +209,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         r.setTitle(cursor.getString(1));
         r.setIngredients(cursor.getString(2));
         r.setInstructions(cursor.getString(3));
-
-        Log.d("getRecipe(" + id + ")", r.toString());
-
+        db.close();
         return r;
     }
 
     public List<RecipeDAO> getAllRecipe() {
         List<RecipeDAO> recipe = new ArrayList<RecipeDAO>();
 
-
         String query = "SELECT  * FROM " + TABLE_RECIPE + " ORDER BY " + KEY_RTITLE + " ASC";
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
 
         RecipeDAO r = null;
         if (cursor.moveToFirst()) {
@@ -263,13 +233,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 recipe.add(r);
             } while (cursor.moveToNext());
         }
-
-        Log.d("getAllRecipe()", recipe.toString());
-
+        db.close();
         return recipe;
     }
 
-    public int updateRecipe(RecipeDAO r) {
+    public void updateRecipe(RecipeDAO r) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -277,15 +245,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put("ingredients", r.getIngredients());
         values.put("instructions", r.getInstructions());
 
-
-        int i = db.update(TABLE_RECIPE, //table
+        db.update(TABLE_RECIPE, //table
                 values, // column/value
                 KEY_RID + " = ?", // selections
                 new String[]{String.valueOf(r.getRecipeID())});
 
         db.close();
-
-        return i;
     }
 
     public void deleteAllRecipe() {
@@ -294,7 +259,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_RECIPE + "'");
 
         db.close();
-
     }
 
     public void deleteRecipe(int id) {
@@ -302,7 +266,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_RECIPE, KEY_RID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
+    //END OF CRUD FOR RECIPE
 
+    //BEGIN CRUD FOR MEALPLAN
     public void addMeal(RecipeDAO r) {
         Log.d("addRecipe", r.toString());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -313,10 +279,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.d("Data Added", r.toString());
         db.close();
     }
-
-    //END CRUD FOR MEAL
-
-    //BEGIN CRUD PROGRAM
 
     public RecipeDAO getMeal(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -336,22 +298,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         r.setRecipeID(Integer.parseInt(cursor.getString(0)));
         r.setTitle(cursor.getString(1));
         r.setIngredients(cursor.getString(2));
-
-        Log.d("getRecipe(" + id + ")", r.toString());
-
+        db.close();
         return r;
     }
 
     public List<RecipeDAO> getAllMeal() {
         List<RecipeDAO> recipe = new ArrayList<RecipeDAO>();
 
-
         String query = "SELECT  * FROM " + TABLE_MEALPLAN;
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
 
         RecipeDAO r = null;
         if (cursor.moveToFirst()) {
@@ -364,9 +321,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 recipe.add(r);
             } while (cursor.moveToNext());
         }
-
-        Log.d("getAllRecipe()", recipe.toString());
-
+        db.close();
         return recipe;
     }
 
@@ -392,7 +347,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MEALPLAN, null, null);
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_MEALPLAN + "'");
-
         db.close();
     }
 
@@ -401,15 +355,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_MEALPLAN, KEY_MID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
+    //END CRUD FOR MEALPLAN
 
+    //BEGIN CRUD PROGRAM
     public void addProgram(ExerciseDAO r) {
         Log.d("addRecipe", r.toString());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_PTITLE, r.getTitle());
-        values.put(KEY_PDESCRIPTION, r.getDescription());
         db.insert(TABLE_PROGRAM, null, values);
-        Log.d("Data Added", r.toString());
+        db.close();
         db.close();
     }
 
@@ -427,26 +382,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        ExerciseDAO r = new ExerciseDAO();
-        r.setExerciseID(Integer.parseInt(cursor.getString(0)));
-        r.setTitle(cursor.getString(1));
-        r.setDescription(cursor.getString(2));
-
-        Log.d("getRecipe(" + id + ")", r.toString());
-
-        return r;
+        ExerciseDAO e = new ExerciseDAO();
+        e.setExerciseID(Integer.parseInt(cursor.getString(0)));
+        e.setTitle(cursor.getString(1));
+        db.close();
+        return e;
     }
 
     public List<ExerciseDAO> getAllProgram() {
         List<ExerciseDAO> exercise = new ArrayList<ExerciseDAO>();
 
-
         String query = "SELECT  * FROM " + TABLE_PROGRAM;
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
 
         ExerciseDAO r = null;
         if (cursor.moveToFirst()) {
@@ -454,14 +403,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 r = new ExerciseDAO();
                 r.setExerciseID(Integer.parseInt(cursor.getString(0)));
                 r.setTitle(cursor.getString(1));
-                r.setDescription(cursor.getString(2));
-
                 exercise.add(r);
             } while (cursor.moveToNext());
         }
-
-        Log.d("getAllRecipe()", exercise.toString());
-
+        db.close();
         return exercise;
     }
 
@@ -470,8 +415,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROGRAM);
         String CREATE_PROGRAM_TABLE = "CREATE TABLE program ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, " +
-                "description TEXT)";
+                "title TEXT)";
         db.execSQL(CREATE_PROGRAM_TABLE);
 
         for (int i = 0; i < r.size(); i++) {
@@ -487,7 +431,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PROGRAM, null, null);
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_PROGRAM + "'");
-
         db.close();
     }
 
@@ -496,6 +439,5 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PROGRAM, KEY_PID + " = ?", new String[]{Integer.toString(id)});
         db.close();
     }
-
     //END CRUD FOR PROGRAM
 }

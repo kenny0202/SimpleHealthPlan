@@ -88,7 +88,6 @@ public class MealPlan extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.delete_meal:
                 final SweetAlertDialog mealDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
@@ -126,6 +125,4 @@ public class MealPlan extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
-

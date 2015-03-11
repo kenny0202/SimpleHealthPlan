@@ -25,19 +25,17 @@ import logofhealth.com.kenny.dao.RecipeDAO;
 public class CreateRecipe extends Fragment {
     EditText title_text, ingredients_text, instructions_text;
     MySQLiteHelper db;
-    RecipeDAO r = new RecipeDAO();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.add_recipe_fragment, container, false);
 
-        title_text = (EditText) v.findViewById(R.id.reps);
-        ingredients_text = (EditText) v.findViewById(R.id.editText4);
-        instructions_text = (EditText) v.findViewById(R.id.editText5);
+        title_text = (EditText) v.findViewById(R.id.title);
+        ingredients_text = (EditText) v.findViewById(R.id.ingredients);
+        instructions_text = (EditText) v.findViewById(R.id.instructions);
         ActionButton addrecipeButton = (ActionButton) v.findViewById(R.id.action_button);
         addrecipeButton.show();
-
 
         addrecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,28 +55,19 @@ public class CreateRecipe extends Fragment {
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     title_text.startAnimation(shake);
                     title_text.setError("Missing Title");
-                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                    Crouton.makeText(getActivity(), "Missing title", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
                     title_text.requestFocus();
-                    ingredients_text.startAnimation(shake);
-                    ingredients_text.setError("Missing Description");
-                    ingredients_text.requestFocus();
                 }
             }
         });
         return v;
     }
 
-    //validation method
     private boolean checkValidation() {
         boolean value = true;
 
         if (!Validation.hasText(title_text))
             value = false;
-
-        if (!Validation.hasText(ingredients_text))
-            value = false;
-
         return value;
     }
-
 }

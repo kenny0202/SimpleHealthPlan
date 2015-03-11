@@ -12,20 +12,15 @@ import logofhealth.com.kenny.exercise.Programs;
  */
 public class ExerciseViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-    int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    CharSequence Titles[];
+    int NumbOfTabs;
 
-
-    // Build a Constructor and assign the passed Values to appropriate values in the class
     public ExerciseViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
-
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
-
     }
 
-    //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
 
@@ -36,18 +31,12 @@ public class ExerciseViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new Programs();
         }
         return null;
-
-
     }
-
-    // This method return the titles for the Tabs in the Tab Strip
 
     @Override
     public CharSequence getPageTitle(int position) {
         return Titles[position];
     }
-
-    // This method return the Number of tabs for the tabs Strip
 
     @Override
     public int getCount() {

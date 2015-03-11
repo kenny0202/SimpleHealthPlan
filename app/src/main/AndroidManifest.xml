@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="logofhealth.com.kenny">
 
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -26,11 +28,7 @@
             android:label="Exercise"></activity>
 
         <activity
-            android:name="logofhealth.com.kenny.extra.DisplayRecipeDetail"
-            android:label=""></activity>
-
-        <activity
-            android:name="logofhealth.com.kenny.extra.WeightFragment"
+            android:name=".recipe.DisplayRecipeDetail"
             android:label=""></activity>
     </application>
 

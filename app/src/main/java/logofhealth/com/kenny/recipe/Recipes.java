@@ -25,7 +25,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import logofhealth.com.kenny.R;
 import logofhealth.com.kenny.adapter.MySQLiteHelper;
 import logofhealth.com.kenny.dao.RecipeDAO;
-import logofhealth.com.kenny.extra.DisplayRecipeDetail;
 
 /**
  * Created by Kenny on 2/16/2015.
@@ -71,7 +70,6 @@ public class Recipes extends Fragment {
                                         Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
                                         i.putExtras(bundle);
                                         startActivity(i);
-
                                         break;
                                     case 1:
                                         db.addMeal(data.get(position));
@@ -80,7 +78,6 @@ public class Recipes extends Fragment {
                                         SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
                                         sad.setTitleText("Success")
                                                 .setContentText(data.get(position).getTitle() + " has been added").show();
-
                                         break;
                                     case 2:
                                         final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
@@ -214,7 +211,6 @@ public class Recipes extends Fragment {
                                         Intent i = new Intent(getActivity(), DisplayRecipeDetail.class);
                                         i.putExtras(bundle);
                                         startActivity(i);
-
                                         break;
                                     case 1:
                                         db.addMeal((RecipeDAO) parent.getAdapter().getItem(position));
@@ -223,7 +219,6 @@ public class Recipes extends Fragment {
                                         SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
                                         sad.setTitleText("Success")
                                                 .setContentText((((RecipeDAO) parent.getAdapter().getItem(position)).getTitle()) + " has been added").show();
-
                                         break;
                                     case 2:
                                         final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);

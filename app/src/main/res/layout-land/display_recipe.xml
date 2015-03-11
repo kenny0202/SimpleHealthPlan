@@ -22,7 +22,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <ScrollView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Ingredients"
+                android:text="@string/ingredient_title_hint"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Instructions"
+                android:text="@string/instruction_title_hint"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -70,39 +70,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:textSize="20sp" />
-
-            <com.software.shell.fab.ActionButton
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_gravity="right"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginRight="15dp"
-                android:layout_row="4"
-                fab:button_color="@color/fab_material_amber_500"
-                fab:button_colorPressed="@color/fab_material_amber_900"
-                fab:hide_animation="@anim/fab_roll_to_right"
-                fab:image="@drawable/ic_action_edit"
-                fab:show_animation="@anim/fab_jump_from_right" />
-
-            <com.software.shell.fab.ActionButton
-                android:id="@+id/save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_gravity="right"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="-20dp"
-                android:layout_row="4"
-                android:visibility="invisible"
-                fab:button_color="@color/fab_material_amber_500"
-                fab:button_colorPressed="@color/fab_material_amber_900"
-                fab:hide_animation="@anim/fab_roll_to_right"
-                fab:image="@drawable/ic_action_save"
-                fab:show_animation="@anim/fab_jump_from_right" />
-
         </LinearLayout>
     </ScrollView>
 

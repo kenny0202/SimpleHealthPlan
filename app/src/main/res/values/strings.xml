@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">Health Log</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
+    <string name="main_menu">Menu</string>
+    <string name="recipe_button">Recipes</string>
+    <string name="exercise_button">Exercises</string>
+
+    <string name="recipe_title_hint">Recipe Title</string>
+    <string name="ingredient_title_hint">Ingredients</string>
+    <string name="instruction_title_hint">Instructions</string>
 </resources>

@@ -8,13 +8,14 @@
     android:weightSum="1">
 
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.97"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:weightSum="1">
+
 
         <ListView
             android:id="@+id/listView"
@@ -27,18 +28,15 @@
             android:id="@+id/action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
             fab:button_color="@color/fab_material_green_500"
             fab:button_colorPressed="@color/fab_material_green_900"
             fab:hide_animation="@anim/fab_roll_to_right"
             fab:image="@drawable/fab_plus_icon"
             fab:show_animation="@anim/fab_jump_from_right" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

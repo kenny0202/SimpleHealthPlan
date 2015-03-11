@@ -26,6 +26,7 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.software.shell.fab.ActionButton;
 
+import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -36,7 +37,6 @@ import logofhealth.com.kenny.R;
 import logofhealth.com.kenny.adapter.MySQLiteHelper;
 import logofhealth.com.kenny.adapter.Validation;
 import logofhealth.com.kenny.dao.ExerciseDAO;
-import logofhealth.com.kenny.extra.WeightFragment;
 
 public class Exercises extends Fragment {
 
@@ -62,7 +62,7 @@ public class Exercises extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                String options[] = {"Open", "Add to Program", "Delete"};
+                String options[] = {"Schedule", "Add to Program", "Delete"};
                 MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
                 mdialog.items(options)
                         .itemsCallback(new MaterialDialog.ListCallback() {
@@ -70,11 +70,14 @@ public class Exercises extends Fragment {
                             public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
                                 switch (which) {
                                     case 0:
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("Title", data.get(position).getTitle().toString());
-                                        Intent i = new Intent(getActivity(), WeightFragment.class);
-                                        i.putExtras(bundle);
-                                        startActivity(i);
+                                        Calendar c = Calendar.getInstance();
+                                        Intent intent = new Intent(Intent.ACTION_EDIT);
+                                        intent.setType("vnd.android.cursor.item/event");
+                                        intent.putExtra("beginTime", c.getTimeInMillis());
+                                        intent.putExtra("endTime", c.getTimeInMillis());
+                                        intent.putExtra("allDay", true);
+                                        intent.putExtra("title", data.get(position).getTitle());
+                                        startActivity(intent);
 
                                         break;
                                     case 1:
@@ -149,7 +152,7 @@ public class Exercises extends Fragment {
                                     data.add(new ExerciseDAO(exerciseName));
                                     Crouton.makeText(getActivity(), exerciseName + " has been added.", Style.CONFIRM).setConfiguration(new Configuration.Builder().setDuration(700).build()).show();
                                 } else {
-                                    Crouton.makeText(getActivity(), "Missing title and description", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
+                                    Crouton.makeText(getActivity(), "Missing title", Style.ALERT).setConfiguration(new Configuration.Builder().setDuration(1000).build()).show();
                                 }
                             }
                         })
@@ -233,7 +236,7 @@ public class Exercises extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
-                String options[] = {"Open", "Add to Program", "Delete"};
+                String options[] = {"Schedule", "Add to Program", "Delete"};
                 MaterialDialog.Builder mdialog = new MaterialDialog.Builder(getActivity());
                 mdialog.items(options)
                         .itemsCallback(new MaterialDialog.ListCallback() {
@@ -241,12 +244,14 @@ public class Exercises extends Fragment {
                             public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
                                 switch (which) {
                                     case 0:
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("Title", parent.getAdapter().getItem(position).toString());
-                                        Intent i = new Intent(getActivity(), WeightFragment.class);
-                                        i.putExtras(bundle);
-                                        startActivity(i);
-
+                                        Calendar c = Calendar.getInstance();
+                                        Intent intent = new Intent(Intent.ACTION_EDIT);
+                                        intent.setType("vnd.android.cursor.item/event");
+                                        intent.putExtra("beginTime", c.getTimeInMillis());
+                                        intent.putExtra("endTime", c.getTimeInMillis());
+                                        intent.putExtra("allDay", true);
+                                        intent.putExtra("title", parent.getAdapter().getItem(position).toString());
+                                        startActivity(intent);
                                         break;
                                     case 1:
                                         db.addProgram(((ExerciseDAO) parent.getAdapter().getItem(position)));
@@ -255,7 +260,6 @@ public class Exercises extends Fragment {
                                         SweetAlertDialog sad = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
                                         sad.setTitleText("Success")
                                                 .setContentText(((ExerciseDAO) parent.getAdapter().getItem(position)).getTitle().toString() + " has been added").show();
-
                                         break;
                                     case 2:
                                         final SweetAlertDialog alertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
@@ -304,7 +308,6 @@ public class Exercises extends Fragment {
 
         if (!Validation.hasText(exercise))
             value = false;
-
         return value;
     }
 }

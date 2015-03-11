@@ -53,7 +53,6 @@ public class Programs extends Fragment {
                 }
             }
         });
-
         return v;
     }
 
@@ -72,7 +71,6 @@ public class Programs extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Handle action bar actions click
         switch (item.getItemId()) {
             case R.id.delete_program:
                 final SweetAlertDialog mealDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);

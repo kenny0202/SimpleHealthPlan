@@ -7,7 +7,6 @@ public class ExerciseDAO {
 
     private int exerciseID;
     private String title;
-    private String description;
 
     public ExerciseDAO() {
 
@@ -15,11 +14,6 @@ public class ExerciseDAO {
 
     public ExerciseDAO(String t) {
         title = t;
-    }
-
-    public ExerciseDAO(String t, String d) {
-        title = t;
-        description = d;
     }
 
     public int getExerciseID() {
@@ -36,14 +30,6 @@ public class ExerciseDAO {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override
