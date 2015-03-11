@@ -32,7 +32,9 @@
         <activity
             android:name=".recipe.DisplayRecipeDetail"
             android:label=""
-            android:theme="@style/DisplayTheme"></activity>
+            android:theme="@style/DisplayTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="logofhealth.com.kenny.menu.RecipeMenu"/>
+            </activity>
     </application>
 
 </manifest>
