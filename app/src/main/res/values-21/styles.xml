@@ -15,4 +15,8 @@
         <item name="colorPrimaryDark">@color/displayDark</item>
     </style>
 
+    <style name="CustomToolbar" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
+
 </resources>
